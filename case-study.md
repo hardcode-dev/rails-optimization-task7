@@ -49,4 +49,30 @@ Took 266 seconds (4:26)
 
 Поигрался еще с числом воркеров но и 6 и 7 оказались хуже 8ми.
 
+Сделал таск rake rspec:run запускающий тесты в паралель и отсылающй данные в influx
+
+
+	namespace :rspec do
+	  desc "run"
+	  task run: :environment do
+	    require 'etc'
+	    require 'tty'
+
+	    cmd = "rake parallel:spec"
+	    puts "Running rspec via `#{cmd}`"
+	    command = TTY::Command.new(printer: :quiet, color: true)
+
+	    start = Time.now
+	    begin
+	      command.run(cmd)
+	    rescue TTY::Command::ExitError
+	      puts 'TEST FAILED SAFELY'
+	    end
+	    finish = Time.now
+
+	    puts 'SENDING METRIC TO INFLUXDB'
+	    TestMetrics.write(user: Etc.getlogin, run_time_seconds: (finish - start).to_i)
+	  end
+	end
+
 
