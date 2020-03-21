@@ -76,3 +76,66 @@ Took 266 seconds (4:26)
 	end
 
 
+Перейдем к исследованию проблем, попробуем 
+	SAMPLE_TESTS=10 TEST_RUBY_PROF=1 rspec 
+
+	-- Crash Report log information --------------------------------------------
+	   See Crash Report log file under the one of following:                    
+	     * ~/Library/Logs/DiagnosticReports                                     
+	     * /Library/Logs/DiagnosticReports                                      
+	   for more details.                                                        
+	Don't forget to include the above Crash Report log file in bug reports.     
+	You may have encountered a bug in the Ruby interpreter or extension libraries.
+	Bug reports are welcome.
+	For details: https://www.ruby-lang.org/bugreport.html
+
+Ну класс.... 
+
+Обновил ruby 2.6.1 -> 2.6.3 
+
+Теперь Illegal instruction: 4 кааайф
+
+ruby 2.7.0 тоже не помогло, отложим
+
+
+Попробуем пойти как в презентации - оптимизируем самый медленный тест
+
+
+	TEST_STACK_PROF=1 TEST_STACK_PROF_FORMAT=json rspec ./spec/controllers/marketplace_item_purchases_controller_spec.rb:49
+
+	[TEST PROF INFO] StackProf (raw) enabled globally: mode – wall, target – suite
+	Run options: include {:locations=>{"./spec/controllers/marketplace_item_purchases_controller_spec.rb"=>[49]}}
+	.
+
+	Finished in 16.67 seconds (files took 14.38 seconds to load)
+	1 example, 0 failures
+
+	[TEST PROF INFO] StackProf report generated: tmp/test_prof/stack-prof-report-wall-raw-total.dump
+	[TEST PROF INFO] StackProf JSON report generated: tmp/test_prof/stack-prof-report-wall-raw-total.json
+
+Тут больше 30% sprockets. Шок какой-то что он вообще тут есть. Оказалось что в jbuilder есть image_url и ему надо посчитать hash фйла чтобы сделать правильную ссылку
+	  config.assets.enabled = false
+	  config.assets.compile = false
+	  config.assets.unknown_asset_fallback = true
+
+
+Попробуем бестпрактис про bcrypt - у нас скорее всего точно каждый тест создает пользователя 
+
+# rails helper
+# speed up password generation for tests
+BCrypt::Engine.cost = BCrypt::Engine::MIN_COST
+
+И внезапно тесты прогнались за 1:53
+
+Прежде чем проверять я решил еще логирование отключить так как лог был размером в 8гб 
+
+    config.log_level = :fatal
+
+Took 104 seconds (1:44)
+
+Вот так дела. Для понятия что именно дало такой прирост откатил изменения по sprockets - Took 115 seconds (1:55)
+Откатил Bcrypt Took 273 seconds (4:33)
+
+Кароч жест какая-то с этим Bcrypt сколько же у нас там настройки стоят
+
+
