@@ -139,3 +139,134 @@ Took 104 seconds (1:44)
 Кароч жест какая-то с этим Bcrypt сколько же у нас там настройки стоят
 
 
+Попробовал снова запустить тестпроф - падает как и раньше 
+
+Обновил всю систему до каталины Abort trap: 6
+
+Каким-то чудом все далось запустить
+
+==================================
+  Mode: wall(1000)
+  Samples: 398544 (3.07% miss rate)
+  GC: 33087 (8.30%)
+==================================
+     TOTAL    (pct)     SAMPLES    (pct)     FRAME
+     93685  (23.5%)       60087  (15.1%)     ActiveRecord::ConnectionAdapters::PostgreSQLAdapter#exec_no_cache
+     30409   (7.6%)       30409   (7.6%)     #<Module:0x00007ffb209bd138>.lines_to_ignore
+     20873   (5.2%)       20873   (5.2%)     (sweeping)
+     21830   (5.5%)       16428   (4.1%)     ActiveRecord::ConnectionAdapters::PostgreSQL::DatabaseStatements#execute
+     12033   (3.0%)       12033   (3.0%)     (marking)
+     19108   (4.8%)       10772   (2.7%)     ActiveRecord::ConnectionAdapters::PostgreSQLAdapter#exec_cache
+     39143   (9.8%)        8734   (2.2%)     #<Module:0x00007ffb209bd138>.custom_line
+      5282   (1.3%)        5282   (1.3%)     #<Module:0x00007ffb2005bf68>.input_to_storage
+      4929   (1.2%)        4896   (1.2%)     BCrypt::Engine.hash_secret
+      4601   (1.2%)        4601   (1.2%)     ActiveRecord::Base.logger
+      4394   (1.1%)        4394   (1.1%)     block (3 levels) in class_attribute
+      7389   (1.9%)        4283   (1.1%)     RSpec::Mocks::AnyInstance::Recorder#ancestor_is_an_observer?
+      3823   (1.0%)        3823   (1.0%)     ActiveSupport::Callbacks::CallTemplate#expand
+      3355   (0.8%)        3355   (0.8%)     Concurrent::Collection::NonConcurrentMapBackend#[]
+      3091   (0.8%)        3091   (0.8%)     String#xor_impl
+      3440   (0.9%)        2976   (0.7%)     ActiveModel::AttributeSet#[]
+      2880   (0.7%)        2880   (0.7%)     #<Module:0x00007ffb2005bf68>.storage_to_output
+      3496   (0.9%)        2801   (0.7%)     block (2 levels) in class_attribute
+      2640   (0.7%)        2640   (0.7%)     #<Module:0x00007ffb1b98f9b8>.pbkdf2_hmac
+      2556   (0.6%)        2556   (0.6%)     ActiveModel::Attribute#initialize
+      2509   (0.6%)        2509   (0.6%)     Concurrent::Collection::NonConcurrentMapBackend#get_or_default
+      2413   (0.6%)        2413   (0.6%)     ActiveRecord::Base.default_timezone
+      2408   (0.6%)        2408   (0.6%)     ActiveRecord::Associations#association_instance_get
+      1898   (0.5%)        1898   (0.5%)     ActiveModel::AttributeMethods::ClassMethods#define_proxy_call
+      1873   (0.5%)        1873   (0.5%)     block (2 levels) in class_attribute
+      1823   (0.5%)        1823   (0.5%)     Arel::Collectors::PlainString#<<
+      9306   (2.3%)        1816   (0.5%)     Arel::Visitors::Visitor#visit
+      1814   (0.5%)        1814   (0.5%)     Makara::Logging::Subscriber#current_wrapper_name
+      1790   (0.4%)        1788   (0.4%)     ActiveSupport::PerThreadRegistry#instance
+      1743   (0.4%)        1743   (0.4%)     ActiveRecord::ConnectionAdapters::TransactionState#finalized?
+
+   Вижу подозрительный lines_to_ignore как выяснилось это часть гема marginalia который размечает для DBA с какой строки был вызван SQL запрос - потенциально 10 процентов можно сэкономить
+
+
+  Mode: wall(1000)
+  Samples: 288816 (10.69% miss rate)
+  GC: 16639 (5.76%)
+==================================
+     TOTAL    (pct)     SAMPLES    (pct)     FRAME
+     73033  (25.3%)       51030  (17.7%)     ActiveRecord::ConnectionAdapters::PostgreSQLAdapter#exec_no_cache
+     17680   (6.1%)       13851   (4.8%)     ActiveRecord::ConnectionAdapters::PostgreSQL::DatabaseStatements#execute
+     10070   (3.5%)       10070   (3.5%)     (sweeping)
+     14487   (5.0%)        9028   (3.1%)     ActiveRecord::ConnectionAdapters::PostgreSQLAdapter#exec_cache
+      6470   (2.2%)        6470   (2.2%)     (marking)
+      4961   (1.7%)        4935   (1.7%)     BCrypt::Engine.hash_secret
+     11668   (4.0%)        4380   (1.5%)     RSpec::Mocks::AnyInstance::Recorder#ancestor_is_an_observer?
+      3922   (1.4%)        3922   (1.4%)     block (3 levels) in class_attribute
+      3695   (1.3%)        3695   (1.3%)     ActiveRecord::Base.logger
+      3323   (1.2%)        3323   (1.2%)     ActiveSupport::Callbacks::CallTemplate#expand
+      2889   (1.0%)        2889   (1.0%)     #<Module:0x00007fa03e5b73f0>.storage_to_output
+      2661   (0.9%)        2661   (0.9%)     String#xor_impl
+      2613   (0.9%)        2613   (0.9%)     #<Module:0x00007fa03b883c80>.pbkdf2_hmac
+      2983   (1.0%)        2574   (0.9%)     ActiveModel::AttributeSet#[]
+      2527   (0.9%)        2527   (0.9%)     Concurrent::Collection::NonConcurrentMapBackend#[]
+      3134   (1.1%)        2405   (0.8%)     block (2 levels) in class_attribute
+      2118   (0.7%)        2118   (0.7%)     RSpec::Mocks::ObjectReference.name_of
+      2117   (0.7%)        2117   (0.7%)     ActiveRecord::Associations#association_instance_get
+      2112   (0.7%)        2112   (0.7%)     ActiveModel::Attribute#initialize
+      2085   (0.7%)        2085   (0.7%)     Concurrent::Collection::NonConcurrentMapBackend#get_or_default
+      1668   (0.6%)        1668   (0.6%)     ActiveRecord::Base.default_timezone
+      1665   (0.6%)        1665   (0.6%)     ActiveModel::AttributeMethods::ClassMethods#define_proxy_call
+      1610   (0.6%)        1610   (0.6%)     RSpec::Support::ReentrantMutex#enter
+      1583   (0.5%)        1583   (0.5%)     block (2 levels) in class_attribute
+      1534   (0.5%)        1534   (0.5%)     ActiveSupport::PerThreadRegistry#instance
+      1531   (0.5%)        1501   (0.5%)     Market::BinanceDex#order
+      1458   (0.5%)        1458   (0.5%)     Makara::Logging::Subscriber#current_wrapper_name
+      1455   (0.5%)        1455   (0.5%)     Arel::Collectors::PlainString#<<
+      5016   (1.7%)        1391   (0.5%)     ActiveRecord::AttributeMethods::Read#_read_attribute
+      1363   (0.5%)        1363   (0.5%)     ActiveRecord::ConnectionAdapters::TransactionState#finalized?
+
+
+Ушло много строк, размер дампа уменьшился с 350Mb до 250Mb
+
+
+### Factory Doctor
+
+Попробуем FDOC=1 rspec 
+
+Total (potentially) bad examples: 285
+Total wasted time: 00:12.473
+
+Из 4:35 в один поток это выглядит не стоящим исследования дальнейшего
+
+### заметил что в tmp/storage создется много папок и файлов 
+Все они одинакоковые с одной и той же иконкой
+Их таких 796 штук видимо с какой-то фабирики в active-storage сохраняется
+
+Сделал trait 
+trait :with_image do
+      	...
+end
+
+В другом месте добавил let_it_be вместо let
+
+  config.active_storage.service = :test 
+
+Пара файлов все равно создается, зачем - загадка
+
+Took 100 seconds (1:40)
+
+
+### проверим boot time
+
+TEST_STACK_PROF=boot rspec ./spec/lib/white_labels/base_site_spec.rb 
+
+Мне показалось много bootsnap storage_to_output и я пошел смотреть что там и как в документации, в процессе просмотра и сравнения с нашими настройками заметил что у анс в тестах eager_load = true зачем-то
+Я даже создал новый реилс апп посмотреть что там и там false 
+	 # Do not eager load code on boot. This avoids loading your whole application
+	  # just for the purpose of running a single test. If you are using a tool that
+	  # preloads Rails for running tests, you may have to set it to true.
+	  config.eager_load = false  
+
+Понять почему 3 года назад мы поставили в true я не смог, коммит оч сложный и выглядит как будто случпйно зацепили, человек кто делал тоже не помнит. 
+
+Отключил, часть тестов отлетела, поправил область видимости имен и вуаля
+Took 92 seconds (1:32)
+	  
+
+
