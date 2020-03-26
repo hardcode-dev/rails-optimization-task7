@@ -17,6 +17,6 @@
 ![before optimyzatio](./images/Screenshot_20200326_012122.png)
 4.1 удалось избавиться от databse_cleaner-а \
 4.2 частично по грязному ускорил работу BacktraceCleaner \
-5. Подключив `let_it_be` и `bootsnap`, и убрав не нужные методы из `spec/factories/users.rb` удалось сократить время загрузки и работы тестов на примере `spec/controllers/internal_users_controller_spec.rb`
+5. Подключив `let_it_be` и `bootsnap`, и убрав не нужные методы из `spec/factories/users.rb` удалось сократить время загрузки и работы тестов на примере `spec/controllers/internal_users_controller_spec.rb` c 62 секунда до 12.
 ![before optimyzatio](./images/Screenshot_20200326_002704.png)
 6. Так же поработал с семплированием спеков.
