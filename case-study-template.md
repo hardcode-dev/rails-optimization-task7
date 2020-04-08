@@ -18,7 +18,7 @@
 
 Для этого я использовал инструменты: https://github.com/influxdata/TICK-docker + https://github.com/palkan/influxer.
 
-!!!вставить картинку
+![metrics-before](https://raw.githubusercontent.com/badimalex/rails-optimization-task7/task-7/case-study/dx-metrics.png)
 
 ## Гарантия корректности работы оптимизированной программы
 
@@ -190,6 +190,8 @@ ProductTypes (./spec/features/product_type_spec.rb:5) – 00:00.006 of 00:20.271
 
 После оптимизации:
 `Finished in 36.66 seconds`
+
+![metrics-before](https://raw.githubusercontent.com/badimalex/rails-optimization-task7/task-7/case-study/dx-after.png)
 
 ## Защита от регрессии производительности
 
