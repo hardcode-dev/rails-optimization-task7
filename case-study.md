@@ -203,3 +203,4 @@ Google::PageS...::QuotaChecker (./spec/services/google/page_speed/quota_checker_
 ## Итого
 - Настроил систему мониторинга DX метрик
 - Уменьшил время прогона с 72 сек. до 20сек.
+![1](1.png)
