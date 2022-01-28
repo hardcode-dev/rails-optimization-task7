@@ -198,7 +198,7 @@ AccountNotificationsService (./spec/services/account_notifications_service_spec.
 Google::PageS...::QuotaChecker (./spec/services/google/page_speed/quota_checker_spec.rb:5) – 00:00.360 of 00:00.379 (4)
 ```
 
-Добавил `parallel_tests`, сделал пару запусков и не получил ускорения прогона тестов значения +-2 сек. от времени запуска в 1 поток.
+Добавил `parallel_tests`, сделал пару запусков и не получил ускорения прогона тестов, +-2 сек. от времени запуска в 1 поток.
 
 ## Итого
 - Настроил систему мониторинга DX метрик
