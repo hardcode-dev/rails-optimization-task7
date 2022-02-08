@@ -117,7 +117,7 @@ Top 10 slowest example groups:
     0.09044 seconds average (0.54262 seconds / 6 examples) ./spec/services/favicon/notifier_spec.rb:5
 ```
 
-Есть точка роста `8.64 seconds ./spec/policies/domain_policy_spec.rb:24`, обноружил ошибку, с созданием большого кол-во объектов, хотя для теста это абсолютно не нужно делать
+Есть точка роста `8.64 seconds ./spec/policies/domain_policy_spec.rb:24`, обнаружил ошибку, с созданием большого кол-во объектов, хотя для теста это абсолютно не нужно делать
 
 Внес изменения:
 ```
