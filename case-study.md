@@ -55,12 +55,18 @@ Finished in 9 minutes 1 second (files took 14.98 seconds to load)
 
 ### spec/services
 
-Удалось ускорить выполнение: с 50 до 40 секунд.
+Удалось ускорить выполнение: с 50 до 40 секунд (20%).
 
 <img src="/screenshots/services.png" width="750" />
 
 ### spec/serializers
 
-Удалось ускорить выполнение: с 42 до 32 секунд.
+Удалось ускорить выполнение: с 42 до 32 секунд (23%).
 
 <img src="/screenshots/serializers.png" width="750" />
+
+### spec/models
+
+Удалось ускорить выполнение: с 131 до 113 секунд (14%).
+
+<img src="/screenshots/models.png" width="750" />
