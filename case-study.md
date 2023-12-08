@@ -70,3 +70,9 @@ Finished in 9 minutes 1 second (files took 14.98 seconds to load)
 Удалось ускорить выполнение: с 131 до 113 секунд (14%).
 
 <img src="/screenshots/models.png" width="750" />
+
+### spec/queries
+
+Удалось ускорить выполнение: с ... до ... секунд (...).
+
+<img src="/screenshots/queries.png" width="750" />
